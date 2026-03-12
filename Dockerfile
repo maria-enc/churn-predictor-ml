@@ -11,8 +11,8 @@ WORKDIR /app
 # Copiamos solo requirements.txt antes que el resto del código
 # Motivo: Docker cachea capas → si el código cambia pero no las
 # dependencias, no reinstala todo desde cero cada vez
-COPY requirements.txt .
-RUN pip install --no-cache-dir -r requirements.txt
+COPY requirements-dev.txt .
+RUN pip install --no-cache-dir -r requirements-dev.txt
 
 # ── Copiar el resto del proyecto ─────────────────────────────
 COPY api/        ./api/

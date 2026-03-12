@@ -88,7 +88,9 @@ Las variables más relevantes identificadas antes de entrenar el modelo:
 
 ## 🚀 Demo en vivo
 
-👉 **[Ver demo interactiva](#)** _(disponible más adelante)_
+👉 **[Ver demo interactiva](https://huggingface.co/spaces/maria-enc/churn-predictor
+)** 
+
 
 ---
 
@@ -97,7 +99,7 @@ Las variables más relevantes identificadas antes de entrenar el modelo:
 ### Opción A · Con Python
 ```bash
 # 1. Clonar el repo
-git clone https://github.com/TU_USUARIO/churn-predictor-ml.git
+git clone https://github.com/maria-enc/churn-predictor-ml.git
 cd churn-predictor-ml
 
 # 2. Crear entorno virtual
@@ -105,7 +107,7 @@ python -m venv venv
 source venv/bin/activate  # Windows: venv\Scripts\activate
 
 # 3. Instalar dependencias
-pip install -r requirements.txt
+pip install -r requirements-dev.txt
 
 # 4. Arrancar la API
 uvicorn api.main:app --reload
@@ -207,7 +209,7 @@ Content-Type: application/json
 | 5 | Evaluación + SHAP | ✅ |
 | 6 | API FastAPI + Docker | ✅ |
 | 7 | Demo Gradio | ✅ |
-| 8 | Hugging Face Spaces | 🔄 |
+| 8 | Hugging Face Spaces | ✅ |
 | 9 | Tests pytest | 🔄 |
 | 10 | CI/CD GitHub Actions | 🔄 |
 | 11 | Documentación final | 🔄 |

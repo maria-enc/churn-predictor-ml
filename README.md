@@ -206,7 +206,7 @@ Content-Type: application/json
 | 4 | Entrenamiento + MLflow | ✅ |
 | 5 | Evaluación + SHAP | ✅ |
 | 6 | API FastAPI + Docker | ✅ |
-| 7 | Demo Gradio | 🔄 |
+| 7 | Demo Gradio | ✅ |
 | 8 | Hugging Face Spaces | 🔄 |
 | 9 | Tests pytest | 🔄 |
 | 10 | CI/CD GitHub Actions | 🔄 |
@@ -218,25 +218,5 @@ Content-Type: application/json
 
 ---
 
-*Desarrollado por María Encina Regoyo (https://www.linkedin.com/in/maria-encina/)*
 
-## ⚙️ Cómo ejecutar localmente
-```bash
-# 1. Clonar el repo
-git clone https://github.com/maria-enc/churn-predictor-ml.git
-cd churn-predictor-ml
-
-# 2. Crear entorno virtual
-python -m venv venv
-source venv/bin/activate
-
-# 3. Instalar dependencias
-pip install -r requirements.txt
-
-# 4. Ejecutar la demo
-python app.py
-```
-
----
-
-*Desarrollado con stack AI-assisted por [María Encina Regoyo](https://www.linkedin.com/in/maria-encina/)*
+*Desarrollado con stack AI-assisted por María Encina Regoyo (https://www.linkedin.com/in/maria-encina/)*

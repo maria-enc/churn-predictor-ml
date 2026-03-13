@@ -1,0 +1,37 @@
+# ============================================================
+# .github/workflows/ci.yml · Pipeline de CI/CD
+# Se ejecuta automáticamente en cada push a main
+# ============================================================
+
+name: CI · Churn Predictor
+
+# Cuándo ejecutar este workflow
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  tests:
+    name: Ejecutar tests
+    runs-on: ubuntu-latest  # GitHub ejecuta esto en un servidor Linux gratuito
+
+    steps:
+      # 1 · Descargar el código del repositorio
+      - name: Checkout código
+        uses: actions/checkout@v4
+
+      # 2 · Instalar Python 3.10
+      - name: Setup Python 3.10
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.10"
+
+      # 3 · Instalar las dependencias
+      - name: Instalar dependencias
+        run: pip install -r requirements-dev.txt
+
+      # 4 · Ejecutar los tests con pytest
+      - name: Ejecutar tests
+        run: pytest tests/test_model.py -v

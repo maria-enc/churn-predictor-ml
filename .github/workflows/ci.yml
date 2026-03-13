@@ -1,9 +1,13 @@
+
 # ============================================================
 # .github/workflows/ci.yml · Pipeline de CI/CD
 # Se ejecuta automáticamente en cada push a main
+# Comprobamos cada vez que subimos un cambios que el código funciona.
+# Si esto no lo añadimos al proyecto deberíamos comprobarlo manualmente.
+# Si los tests pasan, despliega automáticamente en producción.
 # ============================================================
 
-name: CI · Churn Predictor
+name: CI/CD · Churn Predictor
 
 # Cuándo ejecutar este workflow
 on:
@@ -15,7 +19,7 @@ on:
 jobs:
   tests:
     name: Ejecutar tests
-    runs-on: ubuntu-latest  # GitHub ejecuta esto en un servidor Linux gratuito
+    runs-on: ubuntu-latest
 
     steps:
       # 1 · Descargar el código del repositorio
@@ -35,3 +39,28 @@ jobs:
       # 4 · Ejecutar los tests con pytest
       - name: Ejecutar tests
         run: pytest tests/test_model.py -v
+
+  deploy:
+    name: Deploy a Hugging Face Spaces
+    runs-on: ubuntu-latest
+    needs: tests  # solo se ejecuta si los tests pasan
+
+    # Solo despliega en push a main, no en pull requests
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+
+    steps:
+      # 1 · Descargar el código del repositorio
+      - name: Checkout código
+        uses: actions/checkout@v4.2.2
+        with:
+          fetch-depth: 0  # necesario para el historial completo de git
+
+      # 2 · Subir los archivos a Hugging Face Spaces
+      - name: Deploy a Hugging Face Spaces
+        env:
+          HF_TOKEN: ${{ secrets.HF_TOKEN }}
+        run: |
+          git config --global user.email "github-actions@github.com"
+          git config --global user.name "GitHub Actions"
+          git remote add hf https://maria-enc:$HF_TOKEN@huggingface.co/spaces/maria-enc/churn-predictor
+          git push hf main --force

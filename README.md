@@ -210,7 +210,7 @@ Content-Type: application/json
 | 6 | API FastAPI + Docker | ✅ |
 | 7 | Demo Gradio | ✅ |
 | 8 | Hugging Face Spaces | ✅ |
-| 9 | Tests pytest | 🔄 |
+| 9 | Tests pytest | ✅ |
 | 10 | CI/CD GitHub Actions | 🔄 |
 | 11 | Documentación final | 🔄 |
 | 12 | Optimización Optuna | 🔄 |

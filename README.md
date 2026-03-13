@@ -7,6 +7,9 @@
 ![Model](https://img.shields.io/badge/Model-LogisticRegression-orange)
 ![ROC-AUC](https://img.shields.io/badge/ROC--AUC-0.8385-green)
 ![Docker](https://img.shields.io/badge/Docker-ready-blue)
+![Tests](https://img.shields.io/badge/Tests-9%2F9%20passed-brightgreen)
+![CI/CD](https://img.shields.io/badge/CI%2FCD-GitHub%20Actions-black)
+![HuggingFace](https://img.shields.io/badge/Demo-Hugging%20Face%20Spaces-yellow)
 
 ---
 
@@ -86,10 +89,31 @@ Las variables más relevantes identificadas antes de entrenar el modelo:
 
 ---
 
+## 🏗️ Arquitectura del sistema
+```
+Usuario
+  ↓
+Gradio (Hugging Face Spaces)
+  ↓
+app.py · predecir_churn()
+  ↓
+preprocessor.pkl · Pipeline scikit-learn
+  ↓
+best_model.pkl · Logistic Regression
+  ↓
+Predicción + Probabilidad + Nivel de riesgo
+```
+
+Pipeline CI/CD:
+```
+git push → GitHub Actions → pytest 9/9 → Deploy Hugging Face Spaces
+```
+
+---
+
 ## 🚀 Demo en vivo
 
-👉 **[Ver demo interactiva](https://huggingface.co/spaces/maria-enc/churn-predictor
-)** 
+👉 **[Ver demo interactiva](https://huggingface.co/spaces/maria-enc/churn-predictor)**
 
 
 ---
@@ -211,8 +235,8 @@ Content-Type: application/json
 | 7 | Demo Gradio | ✅ |
 | 8 | Hugging Face Spaces | ✅ |
 | 9 | Tests pytest | ✅ |
-| 10 | CI/CD GitHub Actions | 🔄 |
-| 11 | Documentación final | 🔄 |
+| 10 | CI/CD GitHub Actions | ✅ |
+| 11 | Documentación final | ✅ |
 | 12 | Optimización Optuna | 🔄 |
 | 13 | Monitorización Evidently | 🔄 |
 | 14 | Revisión y mejoras | 🔄 |

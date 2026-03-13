@@ -20,11 +20,11 @@ jobs:
     steps:
       # 1 · Descargar el código del repositorio
       - name: Checkout código
-        uses: actions/checkout@v4
+        uses: actions/checkout@v4.2.2
 
       # 2 · Instalar Python 3.10
       - name: Setup Python 3.10
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v5.4.0
         with:
           python-version: "3.10"
 

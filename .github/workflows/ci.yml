@@ -55,12 +55,26 @@ jobs:
         with:
           fetch-depth: 0  # necesario para el historial completo de git
 
-      # 2 · Subir los archivos a Hugging Face Spaces
+      # 2 · Subir solo los archivos necesarios a Hugging Face Spaces
       - name: Deploy a Hugging Face Spaces
         env:
           HF_TOKEN: ${{ secrets.HF_TOKEN }}
         run: |
-          git config --global user.email "github-actions@github.com"
-          git config --global user.name "GitHub Actions"
-          git remote add hf https://maria-enc:$HF_TOKEN@huggingface.co/spaces/maria-enc/churn-predictor
-          git push hf main --force
+          # Clonar el Space de Hugging Face
+          git clone https://maria-enc:$HF_TOKEN@huggingface.co/spaces/maria-enc/churn-predictor hf_space
+          
+          # Copiar solo los archivos que necesita la demo
+          cp app.py hf_space/app.py
+          cp requirements.txt hf_space/requirements.txt
+          mkdir -p hf_space/models
+          cp models/best_model.pkl hf_space/models/best_model.pkl
+          cp models/preprocessor.pkl hf_space/models/preprocessor.pkl
+          
+          # Commit y push al Space
+          cd hf_space
+          git config user.email "github-actions@github.com"
+          git config user.name "GitHub Actions"
+          git add .
+          git diff --staged --quiet || git commit -m "Deploy desde GitHub Actions"
+          git push
+    

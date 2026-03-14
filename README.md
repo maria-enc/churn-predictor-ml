@@ -233,8 +233,8 @@ Content-Type: application/json
 ```json
 {
     "churn": true,
-    "probabilidad": 0.9000,
-    "porcentaje": "90.0%",
+    "probabilidad": 0.8880,
+    "porcentaje": "88.8%",
     "riesgo": "Alto",
     "mensaje": "Cliente en riesgo de abandono"
 }

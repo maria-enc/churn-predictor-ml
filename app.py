@@ -86,7 +86,7 @@ with gr.Blocks(
     gr.Markdown("""
     # 🔮 Churn Predictor · Telco Customer
     Introduce los datos del cliente para predecir su probabilidad de abandono.  
-    Modelo: **Logistic Regression** · ROC-AUC: **0.8385**
+    Modelo: **XGBoost** (optimizado con Optuna) · ROC-AUC: **0.8468**
     """)
 
     with gr.Row():

@@ -4,8 +4,8 @@
 > Proyecto de portfolio — construido en 15 días con stack AI-assisted.
 
 ![Python](https://img.shields.io/badge/Python-3.10-blue)
-![Model](https://img.shields.io/badge/Model-LogisticRegression-orange)
-![ROC-AUC](https://img.shields.io/badge/ROC--AUC-0.8385-green)
+![Model](https://img.shields.io/badge/Model-XGBoost-orange)
+![ROC-AUC](https://img.shields.io/badge/ROC--AUC-0.8468-green)
 ![Docker](https://img.shields.io/badge/Docker-ready-blue)
 ![Tests](https://img.shields.io/badge/Tests-9%2F9%20passed-brightgreen)
 ![CI/CD](https://img.shields.io/badge/CI%2FCD-GitHub%20Actions-black)
@@ -27,14 +27,14 @@ Este modelo predice con anticipación qué clientes tienen riesgo alto de abando
 
 | Métrica | Valor |
 |---------|-------|
-| ROC-AUC | 0.8385 |
-| F1 Score | 0.6116 |
-| Precisión | 0.5061 |
-| Recall | 0.7727 |
-| Mejor modelo | Logistic Regression |
+| ROC-AUC | 0.8468 |
+| F1 Score | 0.6290 |
+| Precisión | 0.5163 |
+| Recall | 0.8048 |
+| Mejor modelo | XGBoost (optimizado con Optuna) |
 
-> El modelo detecta el **77.3% de los clientes** que realmente van a abandonar,
-> con una tasa de falsos negativos del 22.7%.
+> El modelo detecta el 80% de los clientes que realmente van a abandonar, frente al 77.3% anterior. 
+> En términos de negocio eso significa que de cada 100 clientes que se van, ahora detectamos 3 más que antes.
 
 ---
 
@@ -55,7 +55,7 @@ Las variables más relevantes identificadas antes de entrenar el modelo:
 
 ---
 
-## 🧠 Análisis SHAP · Top 10 predictores
+## 🧠 Primer Análisis SHAP · Top 10 predictores · LogisticRegression
 
 | Rank | Feature | SHAP medio |
 |---|---|---|
@@ -70,8 +70,27 @@ Las variables más relevantes identificadas antes de entrenar el modelo:
 | 9 | PaperlessBilling_No | 0.1218 |
 | 10 | MultipleLines_No | 0.1064 |
 
+
+## 🧠 Segundo Análisis SHAP · Top 10 predictores · XGBoost optimizado
+
+| Rank | Feature | SHAP medio |
+|---|---|---|
+| 1 | Contract_Month-to-month | 0.6994 |
+| 2 | tenure | 0.4846 |
+| 3 | OnlineSecurity_No | 0.2395 |
+| 4 | MonthlyCharges | 0.2176 |
+| 5 | InternetService_Fiber optic | 0.2171 |
+| 6 | PaymentMethod_Electronic check | 0.1688 |
+| 7 | TechSupport_No | 0.1641 |
+| 8 | Contract_Two year | 0.1092 |
+| 9 | PaperlessBilling_No | 0.1054 |
+| 10 | MultipleLines_No | 0.0773 |
+
 > **Nota:** TotalCharges fue eliminada por alta correlación con tenure (0.83)
 > y MonthlyCharges (0.65) — multicolinealidad detectada en el EDA y confirmada con SHAP.
+
+> **Nota:** El análisis SHAP del modelo base LogisticRegression está disponible en el notebook
+> `04_evaluation_shap.ipynb`. El análisis SHAP del modelo final XGBoost está en `05_optuna.ipynb`.
 
 ---
 
@@ -79,7 +98,7 @@ Las variables más relevantes identificadas antes de entrenar el modelo:
 
 | Área | Tecnología |
 |------|-----------|
-| ML | scikit-learn, LogisticRegression, SHAP, Optuna |
+| ML | scikit-learn, LogisticRegression, XGBoost, SHAP, Optuna |
 | Tracking | MLflow |
 | API | FastAPI + Docker |
 | Demo | Gradio |
@@ -99,7 +118,7 @@ app.py · predecir_churn()
   ↓
 preprocessor.pkl · Pipeline scikit-learn
   ↓
-best_model.pkl · Logistic Regression
+best_model.pkl · XGBoost (optimizado con Optuna)
   ↓
 Predicción + Probabilidad + Nivel de riesgo
 ```
@@ -158,24 +177,25 @@ docker run -p 8000:8000 churn-predictor
 ```
 churn-predictor-ml/
 ├── data/
-│   ├── raw/                  # Dataset original de Kaggle
-│   └── processed/            # Datos preprocesados
+│   ├── raw/                     # Dataset original de Kaggle
+│   └── processed/               # Datos preprocesados
 ├── models/
-│   ├── best_model.pkl        # Modelo LogisticRegression entrenado
-│   └── preprocessor.pkl      # Pipeline de preprocesamiento
+│   ├── best_model.pkl           # Modelo XGBoost optimizado con Optuna
+│   └── preprocessor.pkl         # Pipeline de preprocesamiento
 ├── notebooks/
-│   ├── 01_eda.ipynb          # Análisis exploratorio
-│   ├── 02_preprocessing.ipynb # Pipeline de preprocesamiento
-│   ├── 03_training.ipynb     # Entrenamiento y comparativa de modelos
+│   ├── 01_eda.ipynb             # Análisis exploratorio
+│   ├── 02_preprocessing.ipynb   # Pipeline de preprocesamiento
+│   ├── 03_training.ipynb        # Entrenamiento y comparativa de modelos
 │   └── 04_evaluation_shap.ipynb # Evaluación + interpretabilidad SHAP
+│   └── 05_optuna.ipynb          # Optimización Optuna + SHAP XGBoost
 ├── api/
-│   └── main.py               # FastAPI · endpoint /predict
+│   └── main.py                  # FastAPI · endpoint /predict
 ├── reports/
-│   ├── figures/              # Gráficas exportadas
-│   └── monitoring/           # Reportes Evidently
-├── tests/                    # Tests con pytest
-├── Dockerfile                # Imagen Docker de la API
-└── .github/workflows/        # CI/CD con GitHub Actions
+│   ├── figures/                 # Gráficas exportadas
+│   └── monitoring/              # Reportes Evidently
+├── tests/                       # Tests con pytest
+├── Dockerfile                   # Imagen Docker de la API
+└── .github/workflows/           # CI/CD con GitHub Actions
 ```
 
 ---
@@ -213,8 +233,8 @@ Content-Type: application/json
 ```json
 {
     "churn": true,
-    "probabilidad": 0.9152,
-    "porcentaje": "91.5%",
+    "probabilidad": 0.9000,
+    "porcentaje": "90.0%",
     "riesgo": "Alto",
     "mensaje": "Cliente en riesgo de abandono"
 }
@@ -237,7 +257,7 @@ Content-Type: application/json
 | 9 | Tests pytest | ✅ |
 | 10 | CI/CD GitHub Actions | ✅ |
 | 11 | Documentación final | ✅ |
-| 12 | Optimización Optuna | 🔄 |
+| 12 | Optimización Optuna | ✅ |
 | 13 | Monitorización Evidently | 🔄 |
 | 14 | Revisión y mejoras | 🔄 |
 | 15 | Presentación portfolio | 🔄 |

@@ -2,8 +2,8 @@
 # ============================================================
 # .github/workflows/ci.yml · Pipeline de CI/CD
 # Se ejecuta automáticamente en cada push a main
-# Comprobamos cada vez que subimos un cambios que el código funciona.
-# Si esto no lo añadimos al proyecto deberíamos comprobarlo manualmente.
+# Comprobamos cada vez que subimos un cambio que el código funciona.
+# Si esto no lo añadimos al proyecto, deberíamos comprobarlo manualmente.
 # Si los tests pasan, despliega automáticamente en producción.
 # ============================================================
 
@@ -60,7 +60,7 @@ jobs:
         env:
           HF_TOKEN: ${{ secrets.HF_TOKEN }}
         run: |
-          # Clonar el Space de Hugging Face
+          # Clonar el Space de Hugging Face en una carpeta llamada hf_space
           git clone https://maria-enc:$HF_TOKEN@huggingface.co/spaces/maria-enc/churn-predictor hf_space
           
           # Copiar solo los archivos que necesita la demo
